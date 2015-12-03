@@ -107,7 +107,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
-SESSION_COOKIE_AGE = 10  # 单位秒 60*30=30分钟。
+SESSION_COOKIE_AGE = 1800  # 单位秒 60*30=30分钟。
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # ：会话cookie可以在用户浏览器中保持有效期。True：关闭浏览器，则Cookie失效。
 
 

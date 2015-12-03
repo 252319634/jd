@@ -91,7 +91,7 @@ def login(request):
         request.session["user"] = myuser.toDict()  # 加入session,注意db模式要使用字典，不能直接使用对象
         response = JsonResponse(msg(0))
         if ifSave == "true":
-            request.session.set_expiry(3600 * 24)
+            request.session.set_expiry(3600 * 24)  # 默认是30分组
             # 你可以传递四种不同的值给它：
             # * 如果value是个整数，session会在些秒数后失效（适用于整个Django框架，即这个数值时效时整个页面都会session失效）。
             # * 如果value是个datatime或timedelta，session就会在这个时间后失效。
