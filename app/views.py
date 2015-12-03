@@ -119,22 +119,21 @@ def register(request):
         username = request.POST.get('username', '')  # 得到用户名
         password1 = request.POST.get('password1', '')  # 得到密码1
         password2 = request.POST.get('password2', '')  # 得到密码2
-        user1 = User.objects.filter(userName=username)  # 查询用户名是否存在
+        user1 = User.objects.filter(userName=username)
+        # 查询用户名是否存在,使用filter方法查询不到返回空列表[],不报错
         # print('用户注册的信息:%s'%locals())
         if user1:
-            # return HttpResponse(Message('5', '用户名已存在').getJson())
-            return JsonResponse(msg(5))
+            return JsonResponse(msg(5))  # 用户名已存在
         if password1 != password2:
-            # return HttpResponse(Message('4', '两次密码不匹配').getJson())
-            return JsonResponse(msg(4))
-        u = User(userName=username, password=password1, )
+            return JsonResponse(msg(4))  # 两次密码不匹配
+        u = User(userName=username, password=password1, )  # 生成一个user对象
+        # print(u.userID,u.userName)
+        # u 没有save()之前是没有userID的
         u.save()
-        # print(u)
-        u = User.objects.get(userName=username)
+        # save()之后就是一个完整的user对象了
+        # print(u.userID,u.userName)
         myUser = UserSession(u.userID, u.userName)
         request.session["user"] = myUser.toDict()  # 加入session,注意db模式要使用字典，不能直接使用对象
-        # request.session['user_id'] = u.userID  # 加入session
-        # request.session['user_name'] = u.userName  # 加入session
         return JsonResponse(msg(0))
 
 
