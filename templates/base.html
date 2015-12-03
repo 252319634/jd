@@ -1,0 +1,48 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <title>{% block title %}京西shangcheng{% endblock title %}</title>
+    <link rel="stylesheet" href="/static/style/base.css" type="text/css">
+    <link rel="stylesheet" href="/static/style/global.css" type="text/css">
+    <link rel="stylesheet" href="/static/style/header.css" type="text/css">
+    <link rel="stylesheet" href="/static/style/footer.css" type="text/css">
+    {% block css %}{% endblock css %}
+
+</head>
+<body>
+
+<div class="topnav">
+    <div class="topnav_bd {% block w %}w1210{% endblock %} bc">
+        <div class="topnav_left">
+        </div>
+        <div class="topnav_right fr">
+            <ul>
+                {% if request.user %}
+                <li>{{ request.user.userName }}，欢迎来到京西！[<a href="/logout/">注销</a>]</li>
+                <li class="line">|</li>
+                <li><a href="/order/">我的订单</a></li>
+                <li class="line">|</li>
+                <li><a href="#">客户服务</a></li>
+                {% else %}
+                <li>您好，欢迎来到京西！[<a href="/login/">登录</a>] [<a href="/register/">免费注册</a>]</li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+{#头部导航#}
+{% block content %}{% endblock content %}
+{#内容主体#}
+{% include 'include/footer.html' %}
+{#底部版权#}
+<script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+{#    <script type="text/javascript" src="/static/js/csrf.js"></script>#}
+{#    <script type="text/javascript" src="/static/js/csrf2.js"></script>#}
+<script type="text/javascript">
+    $.ajaxSetup({headers: {"X-CSRFToken": '{{ csrf_token }}'}});
+</script>
+
+{% block js %}{% endblock js %}
+</body>
+</html>
