@@ -1,3 +1,4 @@
+# coding=utf-8
 """jd2 URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -21,7 +22,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^index/', views.index),
     url(r'^$', views.index),
-    url(r'^verify/$', views.verify),
+    url(r'^verify/', views.verify),  # 这个没有$,后面要加随机数字
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),
     url(r'^register/$', views.register, name='register'),

@@ -8,6 +8,8 @@
       <w>csrftoken</w>
       <w>formatters</w>
       <w>levelname</w>
+      <w>myuser</w>
+      <w>wsgi</w>
     </words>
   </dictionary>
 </component>

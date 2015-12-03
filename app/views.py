@@ -12,9 +12,14 @@ from app.verify_gen import get_verify
 def verify(request):
     img, text = get_verify()
     request.session['verify_text'] = text
+
     # print(text)
     return HttpResponse(img, content_type='image/jpeg')
     # 返回的内容是图片要用 content_type='image/jpge' 来说明.不能直接return img
+
+
+def sessionAdd(request, userid):
+    pass
 
 
 def msg(state):
@@ -35,6 +40,8 @@ def msg(state):
 
 
 def index(request):
+    print(request.COOKIES.get('userName', ''))
+    # 获取字典值一律使用get('','')方法!...否则取不到会报错
     return render_to_response('index.html', locals())
 
 
@@ -57,42 +64,53 @@ def login(request):
         return render_to_response('login.html', locals(), context_instance=RequestContext(request))
         # 没有登录就显示登录页面, context_instance=RequestContext(request)这个参数提供crsf_token
     if request.method == 'POST':
-        userName = request.POST.get("userName")  # 获得表单中的用户名
-        password = request.POST.get("password")  # 获得表单中的密码
-        checkCode = request.POST.get("checkCode").strip().lower()  # 表单中的验证码
-        theCheckCode = request.session.get('verify_text').strip().lower()
+        userName = request.POST.get("userName", '')  # 获得表单中的用户名
+        password = request.POST.get("password", '')  # 获得表单中的密码
+        checkCode = request.POST.get("checkCode", '').strip().lower()  # 表单中的验证码
+        theCheckCode = request.session.get('verify_text', '').strip().lower()
         # 正确的验证码,verify()方法中,生成的时候存进session中了 .
         # print('checkCode:',checkCode)
         # print('thecheckCode:',theCheckCode)
         ifSave = request.POST.get("ifSave")
-        user = None
+        u = None
         try:
-            user = User.objects.get(userName=userName)
+            u = User.objects.get(userName=userName)
         except:
             pass
         # print(user)
-        if (user == None):
+        if not u:
             return JsonResponse(msg(1))
 
-        if (user.password != password):
+        if u.password != password:
             return JsonResponse(msg(2))
 
-        if (checkCode != theCheckCode):
+        if checkCode != theCheckCode:
             return JsonResponse(msg(3))
 
-        myUser = UserSession(user.userID, user.userName)
-        request.session["user"] = myUser.toDict()  # 加入session,注意db模式要使用字典，不能直接使用对象
-
-        # if ifSave == "true":
-        # dt = datetime.datetime.now() + datetime.timedelta(hours=5)
-        # response = HttpResponse()
-        # response.set_cookie("userName", user.userName, expires=dt)
-        # response.set_cookie("password", user.password, expires=dt)
-        return JsonResponse(msg(0))
+        myuser = UserSession(u.userID, u.userName)
+        request.session["user"] = myuser.toDict()  # 加入session,注意db模式要使用字典，不能直接使用对象
+        response = JsonResponse(msg(0))
+        if ifSave == "true":
+            request.session.set_expiry(3600 * 24)
+            # 你可以传递四种不同的值给它：
+            # * 如果value是个整数，session会在些秒数后失效（适用于整个Django框架，即这个数值时效时整个页面都会session失效）。
+            # * 如果value是个datatime或timedelta，session就会在这个时间后失效。
+            # * 如果value是0,用户关闭浏览器session就会失效。
+            # * 如果value是None,session会依赖全局session失效策略。
+            response.set_cookie("userName", u.userName)
+            # 如果保存信息就存到cookie里,只存用户名,可以使用这个来识别是哪个用户,但是要操作个人信息还是要从新登陆的
+        else:
+            response.delete_cookie("userName")
+            # 如果不保存信息就从cookie里删除用户名
+            # response.set_cookie("password", user.password, expires=dt)
+        return response
 
 
 def logout(request):
-    del request.session['user']
+    try:
+        del request.session['user']
+    except:
+        pass
     return HttpResponseRedirect('/')
     # return JsonResponse(msg_dict(8))
 
@@ -107,7 +125,7 @@ def register(request):
         # 方法1:使用单独的csrf.js文件处理请求头,从cookie中取得token
         # 方法2:模板中添加下面的js,渲染模板时就取得了token
         # <script type="text/javascript">
-        #     $.ajaxSetup({headers: {"X-CSRFToken": '{{ csrf_token }}'}});
+        # $.ajaxSetup({headers: {"X-CSRFToken": '{{ csrf_token }}'}});
         # </script>
     if request.method == 'POST':  # post请求
         form = RegisterForm(request.POST)  # 使用form类来验证数据的合法性,只能验证单一字段,不能验证两次密码是否相同
@@ -119,10 +137,10 @@ def register(request):
         username = request.POST.get('username', '')  # 得到用户名
         password1 = request.POST.get('password1', '')  # 得到密码1
         password2 = request.POST.get('password2', '')  # 得到密码2
-        user1 = User.objects.filter(userName=username)
+        u = User.objects.filter(userName=username)
         # 查询用户名是否存在,使用filter方法查询不到返回空列表[],不报错
         # print('用户注册的信息:%s'%locals())
-        if user1:
+        if u:
             return JsonResponse(msg(5))  # 用户名已存在
         if password1 != password2:
             return JsonResponse(msg(4))  # 两次密码不匹配
@@ -132,8 +150,8 @@ def register(request):
         u.save()
         # save()之后就是一个完整的user对象了
         # print(u.userID,u.userName)
-        myUser = UserSession(u.userID, u.userName)
-        request.session["user"] = myUser.toDict()  # 加入session,注意db模式要使用字典，不能直接使用对象
+        myuser = UserSession(u.userID, u.userName)
+        request.session["user"] = myuser.toDict()  # 加入session,注意db模式要使用字典，不能直接使用对象
         return JsonResponse(msg(0))
 
 

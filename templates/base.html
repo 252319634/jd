@@ -25,7 +25,7 @@
                 <li class="line">|</li>
                 <li><a href="#">客户服务</a></li>
                 {% else %}
-                <li>您好，欢迎来到京西！[<a href="/login/">登录</a>] [<a href="/register/">免费注册</a>]</li>
+                <li>您好 {% if request.COOKIES.userName %}{{ request.COOKIES.userName }}{% else %}游客{% endif %} ，欢迎来到京西！[<a href="/login/">登录</a>] [<a href="/register/">免费注册</a>]</li>
                 {% endif %}
             </ul>
         </div>

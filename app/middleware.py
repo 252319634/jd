@@ -13,6 +13,7 @@ class CheckSession(object):
         print('中间件request处理程序开始>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
         request.user = request.session.get('user', '')
+                       # | request.COOKIE.get('userName') 提示'WSGIRequest' object has no attribute 'COOKIE'
         # print('user:'+request.user)
         # 取出session中的user,存到request.user中
         print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<中间件request处理程序结束')
@@ -28,7 +29,7 @@ class CheckSession(object):
         # request_csrf_token = ""
         # csrf_token的处理过程:
         # if request.method == "POST":
-        #     try:
+        # try:
         #         print('request.POST.csrfmiddlewaretoken:',request.POST.get('csrfmiddlewaretoken', ''))
         #     except IOError:
         #         # Handle a broken connection before we've completed reading
@@ -50,7 +51,7 @@ class CheckSession(object):
         # print(response.content[:200])
         # print(response.cookies)
         # print(response.status_code)
-        print (u'图片验证中的内容是:'+request.session.get('verify_text'))
+        print (u'图片验证中的内容是:' + request.session.get('verify_text', ''))
         # if response.status_code == 403:
         # response.content = "403 Forbidden"
         print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<中间件response处理程序结束')
