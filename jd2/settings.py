@@ -90,15 +90,19 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+#
+# # TIME_ZONE = 'Asia/Shanghai'
+# TIME_ZONE = 'GMT-8'
+TIME_ZONE = 'Asia/Shanghai'
 
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'zh-cn'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -122,7 +126,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 
 SESSION_SAVE_EVERY_REQUEST = True
-SESSION_COOKIE_AGE = 10  # 单位秒 60*30=30分钟。
+SESSION_COOKIE_AGE = 300  # 单位秒 60*30=30分钟。
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # ：会话cookie可以在用户浏览器中保持有效期。True：关闭浏览器，则Cookie失效。
 
 

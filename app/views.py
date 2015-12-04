@@ -90,7 +90,7 @@ def login(request):
         myuser = UserSession(u.userID, u.userName)
         request.session["user"] = myuser.toDict()  # 加入session,注意db模式要使用字典，不能直接使用对象
         response = JsonResponse(msg(0))
-        response.set_cookie("userName", u.userName)
+        response.set_cookie("userName", u.userName, max_age=60)
         if ifSave == "true":
             request.session.set_expiry(3600 * 24)  # 默认是30分组
             # 你可以传递四种不同的值给它：
