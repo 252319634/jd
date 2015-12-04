@@ -107,9 +107,28 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
+# 按手册和网上的方法在settings.py中设置“SESSION_COOKIE_AGE” 和 “SESSION_EXPIRE_AT_BROWSER_CLOSE” 均不生效。
+# 通过查看django的源代码"middleware.py"才知道这两个参数只有在
+# settings.SESSION_SAVE_EVERY_REQUEST 为True时才有效。
+# 依此在settings.py中设置这个变量后问题解决。
+# 从源代码看SESSION_EXPIRE_AT_BROWSER_CLOSE为True时 SESSION_COOKIE_AGE 不生效。
+# 也就是说用户只能二选一，在浏览器关闭时使session失效 或 超时失效。
+
+# request.session.set_expiry(value) 你可以传递四种不同的值给它： 
+# * 如果value是个整数，session会在些秒数后失效（适用于整个Django框架，即这个数值时效时整个页面都会session失效）。 
+# * 如果value是个datatime或timedelta，session就会在这个时间后失效。 
+# * 如果value是0,用户关闭浏览器session就会失效。 
+# * 如果value是None,session会依赖全局session失效策略。
+
+
+SESSION_SAVE_EVERY_REQUEST = True
 SESSION_COOKIE_AGE = 10  # 单位秒 60*30=30分钟。
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # ：会话cookie可以在用户浏览器中保持有效期。True：关闭浏览器，则Cookie失效。
 
+
+
+
+LOGGING_CONFIG = False
 
 # TEMPLATE_DIRS = (
 # os.path.join(BASE_DIR,  'templates'),
@@ -117,7 +136,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # ：会话cookie可以在用户浏览�
 #
 # LOGGING = {
 # 'version': 1,
-#     'disable_existing_loggers': True,
+# 'disable_existing_loggers': True,
 #     'formatters': {
 #         'standard': {
 #             'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s'

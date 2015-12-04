@@ -6,6 +6,7 @@
       <w>csrf</w>
       <w>csrfmiddlewaretoken</w>
       <w>csrftoken</w>
+      <w>datatime</w>
       <w>formatters</w>
       <w>levelname</w>
       <w>myuser</w>
