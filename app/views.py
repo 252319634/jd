@@ -90,17 +90,19 @@ def login(request):
         myuser = UserSession(u.userID, u.userName)
         request.session["user"] = myuser.toDict()  # 加入session,注意db模式要使用字典，不能直接使用对象
         response = JsonResponse(msg(0))
+        response.set_cookie("userName", u.userName)
         if ifSave == "true":
-            request.session.set_expiry(3600 * 24)
+            request.session.set_expiry(3600 * 24)  # 默认是30分组
             # 你可以传递四种不同的值给它：
             # * 如果value是个整数，session会在些秒数后失效（适用于整个Django框架，即这个数值时效时整个页面都会session失效）。
             # * 如果value是个datatime或timedelta，session就会在这个时间后失效。
             # * 如果value是0,用户关闭浏览器session就会失效。
             # * 如果value是None,session会依赖全局session失效策略。
-            response.set_cookie("userName", u.userName)
+            # response.set_cookie("userName", u.userName)
             # 如果保存信息就存到cookie里,只存用户名,可以使用这个来识别是哪个用户,但是要操作个人信息还是要从新登陆的
         else:
-            response.delete_cookie("userName")
+            request.session.set_expiry(0)
+            # response.delete_cookie("userName")
             # 如果不保存信息就从cookie里删除用户名
             # response.set_cookie("password", user.password, expires=dt)
         return response
