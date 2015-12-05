@@ -96,7 +96,7 @@ DATABASES = {
 # TIME_ZONE = 'GMT-8'
 TIME_ZONE = 'Asia/Shanghai'
 
-LANGUAGE_CODE = 'zh-cn'
+LANGUAGE_CODE = 'zh-hans'
 
 USE_I18N = True
 
@@ -125,14 +125,11 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 # * 如果value是None,session会依赖全局session失效策略。
 
 
-SESSION_SAVE_EVERY_REQUEST = True
-SESSION_COOKIE_AGE = 300  # 单位秒 60*30=30分钟。
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # ：会话cookie可以在用户浏览器中保持有效期。True：关闭浏览器，则Cookie失效。
+# SESSION_SAVE_EVERY_REQUEST = True
+SESSION_COOKIE_AGE = 60 * 30  # 单位秒 60*30=30分钟。
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # ：会话cookie可以在用户浏览器中保持有效期。True：关闭浏览器，则Cookie失效。
 
-
-
-
-LOGGING_CONFIG = False
+# LOGGING_CONFIG = False
 
 # TEMPLATE_DIRS = (
 # os.path.join(BASE_DIR,  'templates'),
@@ -141,7 +138,7 @@ LOGGING_CONFIG = False
 # LOGGING = {
 # 'version': 1,
 # 'disable_existing_loggers': True,
-#     'formatters': {
+# 'formatters': {
 #         'standard': {
 #             'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s'
 #         },

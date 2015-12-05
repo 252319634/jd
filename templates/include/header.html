@@ -36,8 +36,9 @@
 						<b></b>
 					</dt>
 					<dd>
+                        {% if request.session.user %}
 						<div class="prompt">
-							您好，请<a href="/login/">登录</a>
+							您好，{{ request.session.user.userName }} !
 						</div>
 						<div class="uclist mt10">
 							<ul class="list1 fl">
@@ -55,6 +56,11 @@
 							</ul>
 
 						</div>
+                        {% else %}
+                            <div class="prompt">
+							    您好 {{ request.COOKIES.userName }}，请<a href="/login/">登录</a>
+						    </div>
+                        {% endif %}
 						<div style="clear:both;"></div>
 						<div class="viewlist mt10">
 							<h3>最近浏览的商品：</h3>

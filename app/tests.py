@@ -16,7 +16,10 @@ from django.test import TestCase
 # # a = CharField(max_length=20,min_length=10)
 # #
 # # print(a.max_length,a.min_length)
+# #
 #
+# print("中文"+'汉字')
+# print '中文'
+from user_tools import *
 
-print("中文"+'汉字')
-print '中文'
+print user_name_is_valid("a_1")

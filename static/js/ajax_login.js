@@ -1,4 +1,5 @@
 function onLoginIn() {
+    p_error=document.getElementById("formerror");
     userName = $("#name").val();
     password = $("#pw").val();
     checkCode = $("#checkcode").val();
@@ -13,12 +14,14 @@ function onLoginIn() {
         postData,
         function (data) {
             if (data.state == 0) {
+                alert("登录成功!");
+                //setTimeout('window.location.href = "/"',5000); 延时登录
                 window.location.href = "/";
             }
-            else {
-                var p_error=document.getElementById("formerror");
-                p_error.innerHTML = data.msg;
+            if(data.state == 3){
+                changeImg();
             }
+            p_error.innerHTML = data.msg;
         });
 
 }

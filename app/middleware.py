@@ -12,8 +12,9 @@ class CheckSession(object):
         # process_request 方法不用返回request
         print('中间件request处理程序开始>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
-        request.user = request.session.get('user', '')
-                       # | request.COOKIE.get('userName') 提示'WSGIRequest' object has no attribute 'COOKIE'
+        # request.user = request.session.get('user', '')
+        # print('添加用户信息%s到request.user中'%request.user)
+        # | request.COOKIE.get('userName') 提示'WSGIRequest' object has no attribute 'COOKIE'
         # print('user:'+request.user)
         # 取出session中的user,存到request.user中
         print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<中间件request处理程序结束')
@@ -30,9 +31,9 @@ class CheckSession(object):
         # csrf_token的处理过程:
         # if request.method == "POST":
         # try:
-        #         print('request.POST.csrfmiddlewaretoken:',request.POST.get('csrfmiddlewaretoken', ''))
-        #     except IOError:
-        #         # Handle a broken connection before we've completed reading
+        # print('request.POST.csrfmiddlewaretoken:',request.POST.get('csrfmiddlewaretoken', ''))
+        # except IOError:
+        # # Handle a broken connection before we've completed reading
         #         # the POST data. process_view shouldn't raise any
         #         # exceptions, so we'll ignore and serve the user a 403
         #         # (assuming they're still listening, which they probably
@@ -52,6 +53,11 @@ class CheckSession(object):
         # print(response.cookies)
         # print(response.status_code)
         print (u'图片验证中的内容是:' + request.session.get('verify_text', ''))
+        u = request.session.get('user', '')
+        print('用户信息:%s'%u)
+        if u:
+            response.set_cookie("userName", u.get('userName', ''), max_age=3600 * 24 * 30)
+        # 只要用户登录了就把用户名存到cookie中,时间30天
         # if response.status_code == 403:
         # response.content = "403 Forbidden"
         print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<中间件response处理程序结束')

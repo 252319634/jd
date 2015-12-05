@@ -8,7 +8,7 @@ class User(models.Model):
     password = models.CharField(max_length=20, null=False)
     registTime = models.DateTimeField(auto_now=True, null=False)
     loginTime = models.DateTimeField(auto_now=True, null=False)
-
+    gbh=models.CommaSeparatedIntegerField(max_length=20,null=True)
     class Meta:
         db_table = "tb_user"
 
@@ -23,3 +23,4 @@ class Goods(models.Model):
 
     class Meta:
         db_table = "tb_goods"
+

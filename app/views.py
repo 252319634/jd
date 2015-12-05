@@ -7,9 +7,11 @@ from app.forms import *
 from app.userSession import UserSession
 from django.http import JsonResponse
 from app.verify_gen import get_verify
+from user_tools import *
 
 
 def verify(request):
+    # 生成验证码图片
     img, text = get_verify()
     request.session['verify_text'] = text
 
@@ -18,29 +20,8 @@ def verify(request):
     # 返回的内容是图片要用 content_type='image/jpge' 来说明.不能直接return img
 
 
-def sessionAdd(request, userid):
-    pass
-
-
-def msg(state):
-    """
-        # state
-        # 0:"登录成功"
-        # 1:"用户名不存在"
-        # 2:"密码不正确"
-        # 3:"验证码输入错误"
-        # 4:"两次密码不匹配"
-        # 5:"用户名已存在"
-        # 6:"注册成功"
-        # 7:"信息有错误"
-    """
-    state_dict = {0: "登录成功", 1: "用户名不存在", 2: "密码不正确", 3: "验证码输入错误",
-                  4: "两次密码不匹配", 5: "用户名已存在", 6: "注册成功", 7: "信息有错误!", 8: "注销成功!"}
-    return {"state": state, "msg": state_dict[state]}
-
-
 def index(request):
-    print(request.COOKIES.get('userName', ''))
+    print('index,用户信息:%s' % request.session.get('user',''))
     # 获取字典值一律使用get('','')方法!...否则取不到会报错
     return render_to_response('index.html', locals())
 
@@ -59,62 +40,20 @@ def flow3(request):
 
 def login(request):
     if request.method == 'GET':
-        if request.user:
+        if user_is_login(request):
             return HttpResponseRedirect('/user/')  # 如果已经登录则跳转到用户中心
         return render_to_response('login.html', locals(), context_instance=RequestContext(request))
         # 没有登录就显示登录页面, context_instance=RequestContext(request)这个参数提供crsf_token
     if request.method == 'POST':
-        userName = request.POST.get("userName", '')  # 获得表单中的用户名
-        password = request.POST.get("password", '')  # 获得表单中的密码
-        checkCode = request.POST.get("checkCode", '').strip().lower()  # 表单中的验证码
-        theCheckCode = request.session.get('verify_text', '').strip().lower()
-        # 正确的验证码,verify()方法中,生成的时候存进session中了 .
-        # print('checkCode:',checkCode)
-        # print('thecheckCode:',theCheckCode)
-        ifSave = request.POST.get("ifSave")
-        u = None
-        try:
-            u = User.objects.get(userName=userName)
-        except:
-            pass
-        # print(user)
-        if not u:
-            return JsonResponse(msg(1))
-
-        if u.password != password:
-            return JsonResponse(msg(2))
-
-        if checkCode != theCheckCode:
-            return JsonResponse(msg(3))
-
-        myuser = UserSession(u.userID, u.userName)
-        request.session["user"] = myuser.toDict()  # 加入session,注意db模式要使用字典，不能直接使用对象
-        response = JsonResponse(msg(0))
-        response.set_cookie("userName", u.userName, max_age=60)
-        if ifSave == "true":
-            request.session.set_expiry(3600 * 24)  # 默认是30分组
-            # 你可以传递四种不同的值给它：
-            # * 如果value是个整数，session会在些秒数后失效（适用于整个Django框架，即这个数值时效时整个页面都会session失效）。
-            # * 如果value是个datatime或timedelta，session就会在这个时间后失效。
-            # * 如果value是0,用户关闭浏览器session就会失效。
-            # * 如果value是None,session会依赖全局session失效策略。
-            # response.set_cookie("userName", u.userName)
-            # 如果保存信息就存到cookie里,只存用户名,可以使用这个来识别是哪个用户,但是要操作个人信息还是要从新登陆的
-        else:
-            request.session.set_expiry(0)
-            # response.delete_cookie("userName")
-            # 如果不保存信息就从cookie里删除用户名
-            # response.set_cookie("password", user.password, expires=dt)
-        return response
+        if user_is_login(request):
+            return HttpResponseRedirect('/user/')  # 如果已经登录则跳转到用户中心
+        msg = user_login(request)
+        return JsonResponse(msg)
 
 
 def logout(request):
-    try:
-        del request.session['user']
-    except:
-        pass
+    user_logout(request)
     return HttpResponseRedirect('/')
-    # return JsonResponse(msg_dict(8))
 
 
 # 这个视图使用了csrf 下面的render_to_response后面跟上context_instance=RequestContext(request)
