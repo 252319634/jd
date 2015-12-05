@@ -1,9 +1,11 @@
 *.pyc
 *.pyo
 *.db
+db.sqlite3
 *.pot
 *.doctree
 .doctrees
 .DS_Store
 .coverage
 .idea/
+igtest/
