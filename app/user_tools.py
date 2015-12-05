@@ -23,6 +23,12 @@ def msg(state):
 
 
 def toDict(userID, userName):
+    """
+    返回一个字典，session中的user字典，包括userID，userName两个keys
+    :param userID: 123
+    :param userName: aaa
+    :return:{"userName": aaa, "userID": 123}
+    """
     return {"userName": userName, "userID": userID}
 
 
