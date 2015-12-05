@@ -1,7 +1,6 @@
 *.pyc
 *.pyo
 *.db
-*.sqlite3
 *.pot
 *.ttc
 *.ttf
@@ -10,5 +9,5 @@
 .DS_Store
 .coverage
 .idea/
-.logs/
+logs/
 
