@@ -27,8 +27,8 @@ function register() {
             }
             else {
                 //alert(data.msg);
-                var p_error=document.getElementById("formerror");
-                p_error.innerHTML = data.msg;
+                changeImg();
+                document.getElementById("formerror").innerHTML = data.msg;
             }
         });
 }

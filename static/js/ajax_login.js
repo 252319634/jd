@@ -1,5 +1,4 @@
 function onLoginIn() {
-    p_error=document.getElementById("formerror");
     userName = $("#name").val();
     password = $("#pw").val();
     checkCode = $("#checkcode").val();
@@ -18,10 +17,10 @@ function onLoginIn() {
                 //setTimeout('window.location.href = "/"',5000); 延时登录
                 window.location.href = "/";
             }
-            if(data.state == 3){
+            else {
                 changeImg();
+                document.getElementById("formerror").innerHTML = data.msg;
             }
-            p_error.innerHTML = data.msg;
         });
 
 }

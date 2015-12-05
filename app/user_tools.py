@@ -66,6 +66,8 @@ def user_name_is_used(user_name):
     """
     # user_name = request.POST.get('username', '')  # 得到用户名
     u = User.objects.filter(userName=user_name)
+    # 查询用户名是否存在,使用filter方法查询不到返回空列表[],不报错
+    # print('用户注册的信息:%s'%locals())
     if u:
         return True
     return False
@@ -88,11 +90,11 @@ def user_register(request):
     :param request:
     :return:
     """
+    if not verifyTheText(request):
+        return msg(3)
     password1 = request.POST.get('password1', '')  # 得到密码1
     password2 = request.POST.get('password2', '')  # 得到密码2
     username = request.POST.get('username', '')  # 得到用户名
-    # 查询用户名是否存在,使用filter方法查询不到返回空列表[],不报错
-    # print('用户注册的信息:%s'%locals())
     if user_name_is_used(username):
         return msg(5)  # 用户名已存在
     if password1 != password2:
@@ -109,6 +111,8 @@ def user_login(request):
     :param request: 这个request里面有post过来的数据
     :return:返回一个字典,代表登录状态,状态说明在msg函数里
     """
+    if not verifyTheText(request):
+        return msg(3)
     userName = request.POST.get("userName", '')  # 获得表单中的用户名
     password = request.POST.get("password", '')  # 获得表单中的密码
 
@@ -122,8 +126,6 @@ def user_login(request):
         return msg(1)
     if u.password != password:
         return msg(2)
-    if not verifyTheText(request):
-        return msg(3)
     if ifSave == "true":
         request.session.set_expiry(3600 * 24 * 30)
         # 默认是1800秒,选择了保存登录信息,则保存一个月
