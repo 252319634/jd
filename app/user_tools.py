@@ -38,17 +38,37 @@ def user_add_to_session(request, u):
     # 加入session,注意db模式要使用字典，不能直接使用对象
 
 
-def user_name_is_valid(request,user_name):
+def create_user(request):
+    """
+
+    :param request:
+    :return:
+    """
+
+
+def user_name_is_valid(user_name):
     """
     验证用户名时候符合命名规则:用户名必须是3-20位字符，可由字母、数字和下划线组成,以字母开头,中文暂时不考虑
     :param user_name: 一个字符串
     :return: 符合规则返回True,否则返回False
     """
-    username = request.POST.get('username', '')  # 得到用户名
 
     if not re.match(r'^[a-zA-Z]\w{2,19}$', user_name):
         return False
     return True
+
+
+def user_name_is_used(user_name):
+    """
+    验证用户名是否被使用
+    :param ruquest:
+    :return: 被 使用返回True 否则返回False
+    """
+    # user_name = request.POST.get('username', '')  # 得到用户名
+    u = User.objects.filter(userName=user_name)
+    if u:
+        return True
+    return False
 
 
 def user_is_login(request):
@@ -61,6 +81,27 @@ def user_is_login(request):
         return True
     return False
 
+
+def user_register(request):
+    """
+    用户注册
+    :param request:
+    :return:
+    """
+    password1 = request.POST.get('password1', '')  # 得到密码1
+    password2 = request.POST.get('password2', '')  # 得到密码2
+    username = request.POST.get('username', '')  # 得到用户名
+    # 查询用户名是否存在,使用filter方法查询不到返回空列表[],不报错
+    # print('用户注册的信息:%s'%locals())
+    if user_name_is_used(username):
+        return msg(5)  # 用户名已存在
+    if password1 != password2:
+        return msg(4)  # 两次密码不匹配
+    u = User(userName=username, password=password1)
+    u.save()  # 生成一个user对象
+    # u 没有save()之前是没有userID的, save()之后就是一个完整的user对象了
+    user_add_to_session(request, u)
+    return msg(0)
 
 def user_login(request):
     """

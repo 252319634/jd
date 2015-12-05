@@ -21,7 +21,7 @@ def verify(request):
 
 
 def index(request):
-    print('index,用户信息:%s' % request.session.get('user',''))
+    print('index,用户信息:%s' % request.session.get('user', ''))
     # 获取字典值一律使用get('','')方法!...否则取不到会报错
     return render_to_response('index.html', locals())
 
@@ -72,28 +72,10 @@ def register(request):
         # form = RegisterForm(request.POST)  # 使用form类来验证数据的合法性,只能验证单一字段,不能验证两次密码是否相同
         # print('验证表单前的信息:%s'%locals())
         # if not form.is_valid():
-        #     return JsonResponse(msg(7))  # 笼统的返回错误信息
+        # return JsonResponse(msg(7))  # 笼统的返回错误信息
         # 自己验证数据
-
-
-        password1 = request.POST.get('password1', '')  # 得到密码1
-        password2 = request.POST.get('password2', '')  # 得到密码2
-        u = User.objects.filter(userName=username)
-        # 查询用户名是否存在,使用filter方法查询不到返回空列表[],不报错
-        # print('用户注册的信息:%s'%locals())
-        if u:
-            return JsonResponse(msg(5))  # 用户名已存在
-        if password1 != password2:
-            return JsonResponse(msg(4))  # 两次密码不匹配
-        u = User(userName=username, password=password1, )  # 生成一个user对象
-        # print(u.userID,u.userName)
-        # u 没有save()之前是没有userID的
-        u.save()
-        # save()之后就是一个完整的user对象了
-        # print(u.userID,u.userName)
-        myuser = UserSession(u.userID, u.userName)
-        request.session["user"] = myuser.toDict()  # 加入session,注意db模式要使用字典，不能直接使用对象
-        return JsonResponse(msg(0))
+        msg = user_register(request)
+        return JsonResponse(msg)
 
 
 def order(request):
