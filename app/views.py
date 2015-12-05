@@ -69,13 +69,13 @@ def register(request):
         # $.ajaxSetup({headers: {"X-CSRFToken": '{{ csrf_token }}'}});
         # </script>
     if request.method == 'POST':  # post请求
-        form = RegisterForm(request.POST)  # 使用form类来验证数据的合法性,只能验证单一字段,不能验证两次密码是否相同
+        # form = RegisterForm(request.POST)  # 使用form类来验证数据的合法性,只能验证单一字段,不能验证两次密码是否相同
         # print('验证表单前的信息:%s'%locals())
-        if not form.is_valid():
-            return JsonResponse(msg(7))  # 笼统的返回错误信息
+        # if not form.is_valid():
+        #     return JsonResponse(msg(7))  # 笼统的返回错误信息
         # 自己验证数据
 
-        username = request.POST.get('username', '')  # 得到用户名
+
         password1 = request.POST.get('password1', '')  # 得到密码1
         password2 = request.POST.get('password2', '')  # 得到密码2
         u = User.objects.filter(userName=username)

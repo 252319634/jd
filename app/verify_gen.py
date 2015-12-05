@@ -49,3 +49,21 @@ def get_verify():
 # 这是因为PIL无法定位到字体文件的位置，可以根据操作系统提供绝对路径，比如：
 #
 # '/Library/Fonts/Arial.ttf'
+
+
+def verifyTheText(request):
+    """
+    验证request中的验证图片的信息是否正确，验证后删除requset。session中的verify.text数据
+    :param request:
+    :return:验证成功返回True，否则返回False
+    """
+    checkCode = request.POST.get("checkCode", '').strip().lower()  # 表单中的验证码
+    theCheckCode = request.session.get('verify_text', '').strip().lower()
+    if theCheckCode:
+        del request.session['verify_text']  # 取出后删除session中的'verify_text'
+    # 正确的验证码,verify()方法中,生成的时候存进session中了 .
+    # print('checkCode:',checkCode)
+    # print('thecheckCode:',theCheckCode)
+    if checkCode == theCheckCode:
+        return True
+    return False

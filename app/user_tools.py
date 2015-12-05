@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 from app.models import User
+from app.verify_gen import verifyTheText
 
 
 def msg(state):
@@ -37,12 +38,14 @@ def user_add_to_session(request, u):
     # 加入session,注意db模式要使用字典，不能直接使用对象
 
 
-def user_name_is_valid(user_name):
+def user_name_is_valid(request,user_name):
     """
     验证用户名时候符合命名规则:用户名必须是3-20位字符，可由字母、数字和下划线组成,以字母开头,中文暂时不考虑
     :param user_name: 一个字符串
     :return: 符合规则返回True,否则返回False
     """
+    username = request.POST.get('username', '')  # 得到用户名
+
     if not re.match(r'^[a-zA-Z]\w{2,19}$', user_name):
         return False
     return True
@@ -67,13 +70,7 @@ def user_login(request):
     """
     userName = request.POST.get("userName", '')  # 获得表单中的用户名
     password = request.POST.get("password", '')  # 获得表单中的密码
-    checkCode = request.POST.get("checkCode", '').strip().lower()  # 表单中的验证码
-    theCheckCode = request.session.get('verify_text', '').strip().lower()
-    if theCheckCode:
-        del request.session['verify_text']  # 取出后删除session中的'verify_text'
-    # 正确的验证码,verify()方法中,生成的时候存进session中了 .
-    # print('checkCode:',checkCode)
-    # print('thecheckCode:',theCheckCode)
+
     ifSave = request.POST.get("ifSave")
     u = None
     try:
@@ -84,7 +81,7 @@ def user_login(request):
         return msg(1)
     if u.password != password:
         return msg(2)
-    if checkCode != theCheckCode:
+    if not verifyTheText(request):
         return msg(3)
     if ifSave == "true":
         request.session.set_expiry(3600 * 24 * 30)
