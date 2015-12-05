@@ -3,8 +3,8 @@
 *.db
 db.sqlite3
 *.pot
-simsun.ttc
-simhei.ttf
+igtest/simsun.ttc
+igtest/simhei.ttf
 *.doctree
 .doctrees
 .DS_Store
