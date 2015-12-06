@@ -1,13 +1,13 @@
 function onLoginIn() {
-    userName = $("#name").val();
+    username = $("#name").val();
     password = $("#pw").val();
-    checkCode = $("#checkcode").val();
-    ifSave = $("#checkbox").prop("checked");
+    checkcode = $("#checkcode").val();
+    ifsave = $("#checkbox").prop("checked");
     postData = {
-        'userName': userName,
+        'username': username,
         'password': password,
-        'checkCode': checkCode,
-        'ifSave': ifSave
+        'checkcode': checkcode,
+        'ifsave': ifsave
     };
     $.post("/login/",
         postData,

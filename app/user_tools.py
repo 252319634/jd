@@ -107,16 +107,16 @@ def user_register(request):
 
 def user_login(request):
     """
-    用户登录流程
+    用户登录流程,验证用户名和密码,验证码,是否保存登录信息,登录成功后把用户身份添加到session
     :param request: 这个request里面有post过来的数据
     :return:返回一个字典,代表登录状态,状态说明在msg函数里
     """
     if not verifyTheText(request):
         return msg(3)
-    userName = request.POST.get("userName", '')  # 获得表单中的用户名
+    userName = request.POST.get("username", '')  # 获得表单中的用户名
     password = request.POST.get("password", '')  # 获得表单中的密码
 
-    ifSave = request.POST.get("ifSave")
+    ifSave = request.POST.get("ifsave")
     u = None
     try:
         u = User.objects.get(userName=userName)

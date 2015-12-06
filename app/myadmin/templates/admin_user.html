@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="/static/ajax_admin_user.js"></script>
+    <title></title>
+</head>
+<body>
+用户管理页面 <br/>
+{% for u in users %}
+    用户名:{{ u.userName }},密码:{{ u.password }},注册时间:{{ u.registTime }},最后登录时间:{{ u.loginTime }}<br/>
+{% endfor %}
+</body>
+</html>

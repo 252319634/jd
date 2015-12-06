@@ -57,7 +57,7 @@ def verifyTheText(request):
     :param request:
     :return:验证成功返回True，否则返回False
     """
-    checkCode = request.POST.get("checkCode", '').strip().lower()  # 表单中的验证码
+    checkCode = request.POST.get("checkcode", '').strip().lower()  # 表单中的验证码
     theCheckCode = request.session.get('verify_text', '').strip().lower()
     if theCheckCode:
         del request.session['verify_text']  # 取出后删除session中的'verify_text'

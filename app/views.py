@@ -11,30 +11,43 @@ from user_tools import *
 
 
 def verify(request):
-    # 生成验证码图片
+    """
+    生成验证码图片
+    :param request:
+    :return:
+    # 返回的内容是图片要用 content_type='image/jpge' 来说明.不能直接return img
+    """
     img, text = get_verify()
     request.session['verify_text'] = text
-
-    # print(text)
     return HttpResponse(img, content_type='image/jpeg')
-    # 返回的内容是图片要用 content_type='image/jpge' 来说明.不能直接return img
 
 
 def index(request):
-    print('index,用户信息:%s' % request.session.get('user', ''))
+    """
+    首页
+    :param request:
+    :return:
     # 获取字典值一律使用get('','')方法!...否则取不到会报错
+    """
+    # print('index,用户信息:%s' % request.session.get('user', ''))
+
     return render_to_response('index.html', locals())
 
 
 def flow1(request):
+    if not user_is_login(request):
+        return HttpResponseRedirect('/login/')
     return render_to_response('my/flow1.html', locals())
 
-
 def flow2(request):
+    if not user_is_login(request):
+        return HttpResponseRedirect('/login/')
     return render_to_response('my/flow2.html', locals())
 
 
 def flow3(request):
+    if not user_is_login(request):
+        return HttpResponseRedirect('/login/')
     return render_to_response('my/flow3.html', locals())
 
 
@@ -79,22 +92,29 @@ def register(request):
 
 
 def order(request):
+    if not user_is_login(request):
+        return HttpResponseRedirect('/login/')
     return render_to_response('my/order.html', locals())
 
 
 def address(request):
+    if not user_is_login(request):
+        return HttpResponseRedirect('/login/')
     return render_to_response('my/address.html', locals())
 
 
 def goods(request):
+
     return render_to_response('goods.html', locals())
 
 
 def list(request):
+
     return render_to_response('list.html', locals())
 
 
 def user(request):
-    if not request.user:
+    if not user_is_login(request):
         return HttpResponseRedirect('/login/')
+
     return render_to_response('user.html', locals())
