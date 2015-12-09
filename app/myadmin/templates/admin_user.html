@@ -2,13 +2,48 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <script type="text/javascript" src="/static/ajax_admin_user.js"></script>
+    <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/static/js/ajax_admin_user.js"></script>
+    <script type="text/javascript">
+        $.ajaxSetup({headers: {"X-CSRFToken": '{{ csrf_token }}'}});
+    </script>
     <title></title>
 </head>
 <body>
 用户管理页面 <br/>
-{% for u in users %}
-    用户名:{{ u.userName }},密码:{{ u.password }},注册时间:{{ u.registTime }},最后登录时间:{{ u.loginTime }}<br/>
-{% endfor %}
+<table border="1">
+    <tr>
+        <th>用户ID</th>
+        <th>用户名</th>
+        <th>密码</th>
+        <th>注册时间</th>
+        <th>最后登录时间</th>
+        <th>操作</th>
+    </tr>
+    {% for u in users %}
+        <tr>
+            <td class="user_id">{{ u.userID }}</td>
+            <td class="user_name">{{ u.userName }}</td>
+            <td class="user_password">{{ u.password }}</td>
+            <td >{{ u.registTime }}</td>
+            <td >{{ u.loginTime }}</td>
+            <td>
+                <button onclick="change(this)">修改</button>
+                <button onclick="del(this)">删除</button>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+<br/>
+
+<form action="">
+    <lable>用户ID:</lable>
+    <input type="text" id="user_id" disabled value=""/>
+    <lable>用户名:</lable>
+    <input type="text" id="user_name" disabled value=""/>
+    <lable>密码:</lable>
+    <input type="text" id="user_password" value=""/>
+    <input type="button" id="btn_save" onclick="save()" value="保存"/>
+</form>
 </body>
 </html>

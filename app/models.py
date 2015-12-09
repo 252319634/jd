@@ -17,19 +17,65 @@ class User(models.Model):
         db_table = "tb_user"
 
 
+# class GoodsClassL1(models.Model):
+# classID = models.AutoField(primary_key=True, unique=True, null=False)
+#     classL1 = models.SmallIntegerField('一级分类', unique=True, null=True)
+#     className = models.CharField('一级类名', max_length=20, unique=True, null=False)
+#
+#     def __str__(self):
+#         return self.className
+#
+#     class Meta:
+#         db_table = "tb_goodsclassl1"
+#
+#
+# class GoodsClassL2(models.Model):
+#     classID = models.AutoField(primary_key=True, unique=True, null=False)
+#     classL1 = models.SmallIntegerField('一级分类', unique=True, null=True)
+#     classL2 = models.SmallIntegerField('二级分类', unique=True, null=True)
+#     className = models.CharField('二级类名', max_length=20, unique=True, null=False)
+#
+#     def __str__(self):
+#         return self.className
+#
+#     class Meta:
+#         db_table = "tb_goodsclassl2"
+
 class GoodsClass(models.Model):
-    classID = models.AutoField(primary_key=True, unique=True, null=False)
-    classL1 = models.SmallIntegerField('一级分类', unique=True, null=True)
-    classL2 = models.SmallIntegerField('二级分类', unique=True, null=True)
-    classL3 = models.SmallIntegerField('三级分类', unique=True, null=True)
-    className = models.CharField('类名', max_length=20, unique=True, null=False)
+    id = models.AutoField(primary_key=True, unique=True, null=False)
+    pid = models.SmallIntegerField('父级cid', unique=False, null=False)
+    # 父级cid
+    cn = models.CharField('类名', max_length=20, unique=False, null=False)
+    # 本分类名称
+    state = models.SmallIntegerField('是否启用', null=False, default=1)
+    # 是否启用该分类
+    priority = models.SmallIntegerField('优先级', null=False, default=1)
+    # 优先级,越高同级排序越靠前
 
     def __str__(self):
-        return self.className
+        return self.cn
 
     class Meta:
         db_table = "tb_goodsclass"
-
+# 原始的分类模型
+# class GoodsClass(models.Model):
+#     id = models.AutoField(primary_key=True, unique=True, null=False)
+#     pid = models.SmallIntegerField('父级cid', unique=False, null=False)
+#     # 父级cid
+#     cid = models.SmallIntegerField('id', unique=True, null=False)
+#     # 本分类的全id
+#     cn = models.CharField('类名', max_length=20, unique=False, null=False)
+#     # 本分类名称
+#     state = models.SmallIntegerField('是否启用', null=False, default=1)
+#     # 是否启用该分类
+#     priority = models.SmallIntegerField('优先级', null=False, default=1)
+#     # 优先级,越高同级排序越靠前
+#
+#     def __str__(self):
+#         return self.cn
+#
+#     class Meta:
+#         db_table = "tb_goodsclass"
 
 class Goods(models.Model):
     goodsID = models.AutoField('商品编号', primary_key=True, unique=True, null=False)

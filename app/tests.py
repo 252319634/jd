@@ -20,6 +20,9 @@ from django.test import TestCase
 #
 # print("中文"+'汉字')
 # print '中文'
-from user_tools import *
+# from user_tools import *
+#
+# print user_name_is_valid("a_1")
 
-print user_name_is_valid("a_1")
+a='1'
+print a.isdigit()
