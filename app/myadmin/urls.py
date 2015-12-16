@@ -6,6 +6,7 @@ from app.myadmin import views
 urlpatterns = [
     url(r'^$', views.admin_index),
     url(r'^goods/$', views.admin_goods),
-    url(r'^goodsclass/$', views.admin_goodsclass),
+    url(r'^goodsclass/(\d*)$', views.admin_goodsclass),
+    # url(r'^goodsclassedit/$', views.admin_goodsclassedit),
     url(r'^user/$', views.admin_user),
 ]

@@ -7,92 +7,48 @@
     <script>
         $.ajaxSetup({headers: {"X-CSRFToken": '{{csrf_token}}'}});
     </script>
-    <title></title>
+    <style type="text/css">
+    </style>
+    <title>商品类别管理页面</title>
 </head>
 <body>
-商品类别管理页面 <br/>
-<div id="fenlei">
-三级分类:
-<select id="select_l1" onchange="load(this)">
-    <option value=""></option>
-    {% for gcs in gcs_l1 %}
-        <option value="{{ gcs.id }}">{{ gcs.cn }}</option>
-    {% endfor %}
-</select>
-<select id="select_l2" onchange="load(this)">
-        <option value="" ></option>
-</select>
-<select id="select_l3" onchange="load(this)">
-        <option value=""></option>
-</select>
+商品类别管理页面 (商品分类一共有三级,一二级分类下不能有商品,第三级分类不能有子分类)<br/>
+
+<div id="content">
+    <div id="J_mainwrap">
+
+        <div class="cat-main">
+        {% for i in gcs %}
+            {% if i.pid == 0 %}
+                <div class="" id="">
+                <div class="title ">
+                    <h4><a href="{{ i.cid }}" target="_blank" {% if i.state == 0%}style="text-decoration: line-through"{% endif %}>{{ i.cn }}</a></h4>
+                </div>
+                <div class="catlist">
+                    <ul class="">
+                    {% for ii in gcs%}
+                    {% if ii.pid == i.cid %}
+                        <li class="section ">
+
+                            <h5 class="subtitle"><a href="{{ ii.cid }}" target="_blank"{% if ii.state == 0%}style="text-decoration: line-through"{% endif %}>{{ ii.cn }}</a></h5>
+
+                            <div class="sublist">
+                                {% for iii in gcs %}
+                                    {% if iii.pid == ii.cid %}
+                                        <a href="{{ iii.cid }}" target="_blank"{% if iii.state == 0%}style="text-decoration: line-through"{% endif %}>{{ iii.cn }}</a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </li>
+                    {% endif %}
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
 </div>
-
-
-分类列表:
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>父级id</th>
-        <th>类名</th>
-        <th>状态</th>
-        <th>优先级</th>
-        <th>操作</th>
-    </tr>
-    {% for gc in gcs %}
-        <tr>
-            <td class="gc_id">{{ gc.id }}</td>
-            <td class="gc_pid">{{ gc.pid }}</td>
-            <td class="gc_cn">{{ gc.cn }}</td>
-            <td class="gc_state">{{ gc.state }}</td>
-            <td class="gc_priority">{{ gc.priority }}</td>
-            <td>
-                <button onclick="get_val(this,'add')">添加</button>
-                <button onclick="get_val(this,'change')">修改</button>
-                <button onclick="del(this)">删除</button>
-            </td>
-        </tr>
-    {% endfor %}
-</table>
-<div><span style="color: red">状态(启用:1,禁用:0);优先级(数字越大排序越靠前)</span></div>
-修改:
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>父级id</th>
-        <th>类名</th>
-        <th>状态</th>
-        <th>优先级</th>
-        <th>操作</th>
-    </tr>
-    <tr>
-        <td><input type="text" id="gc_id" disabled/></td>
-        <td><input type="text" id="gc_pid"/></td>
-        <td><input type="text" id="gc_cn"/></td>
-        <td><input type="text" id="gc_state"/></td>
-        <td><input type="text" id="gc_priority"/></td>
-        <td>
-            <button onclick="save(this)">保存</button>
-        </td>
-    </tr>
-</table>
-添加:
-<table border="1">
-    <tr>
-        <th>父级id</th>
-        <th>类名</th>
-        <th>状态</th>
-        <th>优先级</th>
-        <th>操作</th>
-    </tr>
-    <tr>
-        <td><input type="text" id="add_gc_pid" disabled/></td>
-        <td><input type="text" id="add_gc_cn"/></td>
-        <td><input type="text" id="add_gc_state"/></td>
-        <td><input type="text" id="add_gc_priority"/></td>
-        <td>
-            <button onclick="add(this)">添加</button>
-        </td>
-    </tr>
-</table>
 </body>
 </html>

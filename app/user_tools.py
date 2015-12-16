@@ -144,6 +144,7 @@ def user_login(request):
         # response.set_cookie("password", user.password, expires=dt)
 
     user_add_to_session(request, u)
+    u.save()  # 保存一下可以更新登录时间
     return msg(0)
 
 
