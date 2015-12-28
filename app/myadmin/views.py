@@ -2,7 +2,6 @@
 import datetime
 import json
 from django.core import serializers
-
 from django.shortcuts import render, render_to_response, HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from app.models import *
@@ -18,7 +17,10 @@ def admin_index(request):
 
 
 def admin_goods(request):
-    return render_to_response('admin_goods.html', locals(), context_instance=RequestContext(request))
+    if request.method == "GET":
+        return render_to_response('admin_goods.html', locals(), context_instance=RequestContext(request))
+    if request.method == "POST":
+        return JsonResponse({'state': 0, 'msg': '商品信息!'})
 
 
 def admin_goodsclass(request, cid):
@@ -41,7 +43,7 @@ def admin_goodsclass(request, cid):
         print(post_method)
         # if post_method == 'load':
         # pid = request.POST.get('pid', '')  # 得到传回来的pid
-        #     if not pid:
+        # if not pid:
         #         return HttpResponse('')
         #         # gcs_json = serializers.serialize('json', gcl1)
         #         # return HttpResponse(gcs_json)
