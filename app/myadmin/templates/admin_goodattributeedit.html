@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/static/js/ajax_admin_attredit.js"></script>
+    <script>$.ajaxSetup({headers: {"X-CSRFToken": '{{csrf_token}}'}});</script>
+    <title></title>
+</head>
+<body>
+商品属性编辑页面 <br/>
+
+<div>
+    {% if attrid %}
+
+        <span>所属分类:{{ gcn }}</span>
+        <span>属性id:{{ attrid.attributeid}}</span>
+        <span>属性名:{{ attrid.attributename }}</span>
+        {% else %}
+        没有这个属性!
+    {% endif %}
+{#    {% if pavs %}#}
+{#        {% for pav in pavs %}#}
+{#        <div>#}
+{#            <span>属性值id:{{ pav.attributevalueid }}</span>#}
+{#            <span>属性值:{{ pav.attributevalue }}</span>#}
+{#        </div>#}
+{#        {% endfor %}#}
+{#    {% else %}#}
+{#        <span style="color: red">没有属性值!</span>#}
+{#    {% endif %}#}
+</div>
+{#修改:#}
+{#<table border="1">#}
+{#    <tr>#}
+{#        <th>ID</th>#}
+{#        <th>父级id</th>#}
+{#        <th>类名</th>#}
+{#        <th>状态</th>#}
+{#        <th>优先级</th>#}
+{#        <th>操作</th>#}
+{#    </tr>#}
+{#    <tr>#}
+{#        <td><input type="text" id="gc_cid" disabled value="{{ gc.cid }}"/></td>#}
+{#        <td><input type="text" id="gc_pid" disabled value="{{ gc.pid }}"/></td>#}
+{#        <td><input type="text" id="gc_cn" value="{{ gc.cn }}"/></td>#}
+{#        <td><select id="gc_state" onchange="">#}
+{#            {% if gc.state == 1 %}#}
+{#                <option value="1" selected>启用</option>#}
+{#                <option value="0">不启用</option>#}
+{#            {% else %}#}
+{#                <option value="1">启用</option>#}
+{#                <option value="0" selected>不启用</option>#}
+{#            {% endif %}#}
+{#        </select></td>#}
+{#        <td><input type="text" id="gc_priority" value="{{ gc.priority }}"/></td>#}
+{#        <td>#}
+{#            <button onclick="save(this)">保存</button>#}
+{#            <button onclick="del(this)">删除</button>#}
+{#        </td>#}
+{#    </tr>#}
+{#</table>#}
+{#{% if gc.gcl == 3 %}#}
+{#    <span>三级分类不能增加子分类.</span>#}
+{#{% else %}#}
+{#添加子类:#}
+{#<table border="1">#}
+{#    <tr>#}
+{#        <th>父级id</th>#}
+{#        <th>类名</th>#}
+{#        <th>状态</th>#}
+{#        <th>优先级</th>#}
+{#        <th>操作</th>#}
+{#    </tr>#}
+{#    <tr>#}
+{#        <td><input type="text" id="add_gc_pid" disabled value="{{ gc.cid }}"/></td>#}
+{#        <td><input type="text" id="add_gc_cn"/></td>#}
+{#        <td><select id="add_gc_state">#}
+{#                <option value="1" selected>启用</option>#}
+{#                <option value="0">不启用</option>#}
+{#        </select></td>#}
+{#        <td><input type="text" id="add_gc_priority"/></td>#}
+{#        <td>#}
+{#            <button onclick="add(this)">添加</button>#}
+{#        </td>#}
+{#    </tr>#}
+{#</table>#}
+{#{% endif %}#}
+
+<br/>
+
+
+属性值:
+{% if gavs %}
+
+<table border="1">
+    <tr>
+        <th>属性值id</th>
+        <th>属性值</th>
+        <th>操作</th>
+    </tr>
+    {% for gav in gavs %}
+    <tr>
+        <td>{{ gav.attributevalueid }}</td>
+        <td>{{ gav.attributevalue }}</td>
+        <td>
+            <button onclick="del_attr_value(this)">删除</button>
+            <button onclick="">修改</button>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+还没有属性!
+    <br/>
+{% endif %}
+
+
+
+
+添加属性值:
+<table border="1">
+    <tr>
+
+        <th>属性id</th>
+        <th>属性值</th>
+        <th>操作</th>
+    </tr>
+    <tr>
+        <td><input type="text" id="add_ga_id" disabled value="{{ attrid.attributeid }}"/></td>
+        <td><input type="text" id="add_gav" value=""/></td>
+        <td>
+            <button onclick="add_attr_value(this)">添加</button>
+        </td>
+    </tr>
+</table>
+
+
+
+
+
+
+{##}
+{#<p>分隔线++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p>#}
+{##}
+{#<div id="fenlei">#}
+{#三级分类:#}
+{#<select id="select_l1" onchange="load(this)">#}
+{#    <option value=""></option>#}
+{#    {% for gc in gcs_l1 %}#}
+{#        <option value="{{ gc.id }}">{{ gc.cn }}</option>#}
+{#    {% endfor %}#}
+{#</select>#}
+{#<select id="select_l2" onchange="load(this)">#}
+{#        <option value="" ></option>#}
+{#</select>#}
+{#<select id="select_l3" onchange="load(this)">#}
+{#        <option value=""></option>#}
+{#</select>#}
+{#</div>#}
+{##}
+{##}
+{#分类列表:#}
+{#<table id="gcs_table" border="1">#}
+{#    <tr>#}
+{#        <th>ID</th>#}
+{#        <th>父级id</th>#}
+{#        <th>类名</th>#}
+{#        <th>状态</th>#}
+{#        <th>优先级</th>#}
+{#        <th>操作</th>#}
+{#    </tr>#}
+{#    <tr class="gc" style="display:none;">#}
+{#        <td class="gc_id"></td>#}
+{#        <td class="gc_pid"></td>#}
+{#        <td class="gc_cn"></td>#}
+{#        <td class="gc_state"></td>#}
+{#        <td class="gc_priority"></td>#}
+{#        <td class="gc_comment">#}
+{#            <button onclick="get_val(this,'add')">添加</button>#}
+{#            <button onclick="get_val(this,'change')">修改</button>#}
+{#            <button onclick="del(this)">删除</button>#}
+{#        </td>#}
+{#    </tr>#}
+{#    {% for gc in gcs_l1 %}#}
+{#        <tr class="gc" >#}
+{#            <td class="gc_id">{{ gc.id }}</td>#}
+{#            <td class="gc_pid">{{ gc.pid }}</td>#}
+{#            <td class="gc_cn">{{ gc.cn }}</td>#}
+{#            <td class="gc_state">{{ gc.state }}</td>#}
+{#            <td class="gc_priority">{{ gc.priority }}</td>#}
+{#            <td class="gc_comment">#}
+{#                <button onclick="get_val(this,'add')">添加</button>#}
+{#                <button onclick="get_val(this,'change')">修改</button>#}
+{#                <button onclick="del(this)">删除</button>#}
+{#            </td>#}
+{#        </tr>#}
+{#    {% endfor %}#}
+{#</table>#}
+{#<div><span style="color: red">状态(启用:1,禁用:0);优先级(数字越大排序越靠前)</span></div>#}
+
+
+</body>
+</html>

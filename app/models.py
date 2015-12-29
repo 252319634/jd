@@ -21,7 +21,7 @@ class GoodsClass(models.Model):
     pid = models.SmallIntegerField('父级分类id', null=False, default=0)
     gcl = models.SmallIntegerField('分类级别', null=False)
     cid = models.AutoField('分类id', primary_key=True, unique=True, null=False)
-    cn = models.CharField('一级类名', max_length=20, unique=False, null=False)
+    cn = models.CharField('类名', max_length=20, unique=False, null=False)
     state = models.SmallIntegerField('是否启用', null=False, default=1)
     # 是否启用该分类
     priority = models.SmallIntegerField('优先级', null=False, default=1)
@@ -56,5 +56,26 @@ class Goods(models.Model):
 
 
 class GoodsAttribute(models.Model):
-    attributeid=models.IntegerField('属性id',primary_key=True)
-    goodsclass = models.IntegerField('商品分类', null=False)
+    attributeid = models.IntegerField('属性id', primary_key=True)
+    goodsclass = models.ForeignKey(GoodsClass, related_name='attr_class')
+    attributename = models.CharField('属性名称', max_length=20, null=False)
+
+    def __str__(self):
+        return self.attributename
+
+    class Meta:
+        db_table = "tb_goodsattribute"
+
+
+class AttributeValue(models.Model):
+    attributevalueid = models.IntegerField('属性值id', primary_key=True)
+    attributenameid = models.ForeignKey(GoodsAttribute, related_name='value_attr')
+    attributevalue = models.CharField('属性值', max_length=50)
+
+    def __str__(self):
+        return self.attributevalue
+
+    class Meta:
+        db_table = "tb_goodsattributevalue"
+
+

@@ -86,6 +86,61 @@
     </tr>
 </table>
 {% endif %}
+
+<br/>
+
+
+分类属性:
+{% if gas %}
+
+<table border="1">
+    <tr>
+        <th>属性id</th>
+        <th>属性名</th>
+        <th>操作</th>
+    </tr>
+    {% for ga in gas %}
+    <tr>
+        <td><input type="text" class="ga_id" disabled value="{{ ga.attributeid }}"/></td>
+        <td><a href="/myadmin/goodattribute/{{ ga.attributeid }}" target="_blank">{{ ga.attributename }}</a></td>
+        <td>
+            <button onclick="del_attr(this)">删除</button>
+            <button onclick="">修改</button>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+还没有属性!
+    <br/>
+{% endif %}
+
+
+
+
+添加属性:
+<table border="1">
+    <tr>
+        <th>类id</th>
+        <th>类名</th>
+        <th>属性名</th>
+        <th>操作</th>
+    </tr>
+    <tr>
+        <td><input type="text" id="add_ga_cid" disabled value="{{ gc.cid }}"/></td>
+        <td><input type="text" id="" disabled value="{{ gc.cn }}"/></td>
+        <td><input type="text" id="add_gan"/></td>
+        <td>
+            <button onclick="add_attr(this)">添加</button>
+        </td>
+    </tr>
+</table>
+
+
+
+
+
+
 {##}
 {#<p>分隔线++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p>#}
 {##}

@@ -63,13 +63,13 @@ function add(e) {
     );
 }
 
-function add_attr(e) {
-    var ga_cid = $('#add_ga_cid');
-    var gan = $('#add_gan');
+function add_attr_value(e) {
+    var ga_id = $('#add_ga_id');
+    var gav = $('#add_gav');
     post_data = {
-        'method': 'add_attr',
-        'ga_cid': ga_cid.val(),
-        'gan': gan.val()
+        'method': 'add_attr_value',
+        'ga_id': ga_id.val(),
+        'gav': gav.val()
     };
     //alert(post_data.gc_state);
     $.post('',
@@ -80,13 +80,13 @@ function add_attr(e) {
     );
 }
 
-function del_attr(e) {
+function del_attr_value(e) {
     //删除分类
-    var ga_id = $(e).parent().parent().find('.ga_id').val();
-    alert(ga_id);
+    var gav_id = $(e).parent().parent().find('td:first').html();
+    alert(gav_id);
     post_data = {
-        'method': 'del_attr',
-        'ga_id': ga_id
+        'method': 'del_attr_value',
+        'gav_id': gav_id
     };
     $.post('',
         post_data,

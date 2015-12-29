@@ -35,6 +35,10 @@ def admin_goodsclass(request, cid):
                     gcp = GoodsClass.objects.get(cid=gc.pid)
             except:
                 gc = ''
+            try:
+                gas = gc.attr_class.all()
+            except:
+                gas = ''
             return render_to_response('admin_goodsclassedit.html', locals(), context_instance=RequestContext(request))
         gcs = GoodsClass.objects.all()
         return render_to_response('admin_goodsclass.html', locals(), context_instance=RequestContext(request))
@@ -44,14 +48,14 @@ def admin_goodsclass(request, cid):
         # if post_method == 'load':
         # pid = request.POST.get('pid', '')  # 得到传回来的pid
         # if not pid:
-        #         return HttpResponse('')
-        #         # gcs_json = serializers.serialize('json', gcl1)
-        #         # return HttpResponse(gcs_json)
+        # return HttpResponse('')
+        # # gcs_json = serializers.serialize('json', gcl1)
+        # # return HttpResponse(gcs_json)
         if post_method == 'save':
-            gc_cid = request.POST.get('gc_cid', 'None')
-            gc_cn = request.POST.get('gc_cn', 'None')
-            gc_state = request.POST.get('gc_state', 'None')
-            gc_priority = request.POST.get('gc_priority', 'None')
+            gc_cid = request.POST.get('gc_cid', None)
+            gc_cn = request.POST.get('gc_cn', None)
+            gc_state = request.POST.get('gc_state', None)
+            gc_priority = request.POST.get('gc_priority', None)
             if not (gc_cid and gc_cn and gc_state and gc_priority):
                 return JsonResponse({'state': 1, 'msg': '修改失败!,信息不够'})
             if gc_cid:
@@ -68,10 +72,10 @@ def admin_goodsclass(request, cid):
 
         if post_method == 'add':
             # gc_id = request.POST.get('gc_id')
-            gc_pid = request.POST.get('gc_pid', 'None')
-            gc_cn = request.POST.get('gc_cn', 'None')
-            gc_state = request.POST.get('gc_state', 'None')
-            gc_priority = request.POST.get('gc_priority', 'None')
+            gc_pid = request.POST.get('gc_pid', None)
+            gc_cn = request.POST.get('gc_cn', None)
+            gc_state = request.POST.get('gc_state', None)
+            gc_priority = request.POST.get('gc_priority', None)
             if not (gc_pid and gc_cn and gc_state and gc_priority):
                 return JsonResponse({'state': 1, 'msg': '添加失败!,信息不够'})
             gcp = GoodsClass.objects.get(cid=gc_pid)
@@ -80,6 +84,28 @@ def admin_goodsclass(request, cid):
             return JsonResponse({'state': 0, 'msg': '添加成功!'})
             # return JsonResponse({'state': 0, 'msg': '添加成功!'})
 
+        if post_method == "add_attr":
+            ga_cid = request.POST.get('ga_cid', None)
+            gan = request.POST.get('gan', None)
+            if not (ga_cid and gan):
+                return JsonResponse({'state': 1, 'msg': '添加失败!信息不够'})
+            ga = GoodsAttribute(attributename=gan, goodsclass_id=ga_cid)
+            ga.save()
+            return JsonResponse({'state': 0, 'msg': '添加属性成功!'})
+
+        if post_method == "del_attr":
+            ga_id = request.POST.get('ga_id', None)
+            if not ga_id:
+                return JsonResponse({'state': 1, 'msg': '删除失败!信息不够'})
+            try:
+                ga = GoodsAttribute.objects.filter(attributeid=ga_id)
+            except:
+                return JsonResponse({'state': 1, 'msg': '删除失败,没有此属性!'})
+            if ga:
+                ga[0].delete()
+                return JsonResponse({'state': 0, 'msg': '删除属性成功!'})
+            else:
+                return JsonResponse({'state': 1, 'msg': '删除失败,没有此属性!'})
         if post_method == 'del':
             gc_cid = request.POST.get('gc_cid')
             if gc_cid:
@@ -92,13 +118,39 @@ def admin_goodsclass(request, cid):
                     # return JsonResponse({'state': 0, 'msg': '删除成功!'})
 
 
-def admin_goodsclassedit(request):
+def admin_goodattribute(request, gaid):
     if request.method == 'GET':
-        cid = request.REQUEST.get('cid', '')
-        if cid:
-            pass
-        return render_to_response('admin_goodsclassedit.html', locals(), context_instance=RequestContext(request))
-
+        if gaid:
+            try:
+                attrid = GoodsAttribute.objects.get(attributeid=gaid)  # 获得属性id
+            except:
+                attrid = ''
+            if attrid:
+                gcn = attrid.goodsclass.cn  # 获得这个拥有这个属性的分类名,用于网页显示
+                gavs = attrid.value_attr.all()  # 获得这个属性的所有的值
+        return render_to_response('admin_goodattributeedit.html', locals(), context_instance=RequestContext(request))
+    if request.method == 'POST':
+        post_method = request.POST.get('method', '')
+        if post_method == "add_attr_value":
+            ga_id = request.POST.get('ga_id', None)
+            gav = request.POST.get('gav', None)
+            if not (ga_id and gav):
+                return JsonResponse({'state': 1, 'msg': '添加失败,信息不足!'})
+            try:
+                ga = GoodsAttribute.objects.get(attributeid=ga_id)
+            except:
+                return JsonResponse({'state':1, 'msg': '添加失败,信息错误!'})
+            attr_value = AttributeValue(attributenameid=ga, attributevalue=gav)
+            attr_value.save()
+            return JsonResponse({'state': 0, 'msg': '添加成功!'})
+        if post_method == "del_attr_value":
+            gav_id = request.POST.get('gav_id', None)
+            try:
+                gav = AttributeValue.objects.get(attributevalueid=gav_id)
+            except:
+                return JsonResponse({'state':1, 'msg': '删除失败,信息错误!'})
+            gav.delete()
+            return JsonResponse({'state': 0, 'msg': '删除成功!'})
 
 def admin_user(request):
     """

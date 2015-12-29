@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^$', views.admin_index),
     url(r'^goods/$', views.admin_goods),
     url(r'^goodsclass/(\d*)$', views.admin_goodsclass),
+    url(r'^goodattribute/(\d*)$', views.admin_goodattribute),
     # url(r'^goodsclassedit/$', views.admin_goodsclassedit),
     url(r'^user/$', views.admin_user),
 ]
