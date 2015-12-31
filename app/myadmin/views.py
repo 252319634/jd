@@ -61,13 +61,6 @@ def admin_goodsclass(request, cid):
         return render_to_response('admin_goodsclass.html', locals(), context_instance=RequestContext(request))
     if request.method == 'POST':
         post_method = request.POST.get('method', '')
-        # print(post_method)
-        # if post_method == 'load':
-        # pid = request.POST.get('pid', '')  # 得到传回来的pid
-        # if not pid:
-        # return HttpResponse('')
-        # # gcs_json = serializers.serialize('json', gcl1)
-        # # return HttpResponse(gcs_json)
         if post_method == 'save':
             gc_cid = request.POST.get('gc_cid', None)
             gc_cn = request.POST.get('gc_cn', None)
