@@ -83,7 +83,7 @@ function add_attr(e) {
 function del_attr(e) {
     //删除分类
     var ga_id = $(e).parent().parent().find('.ga_id').val();
-    alert(ga_id);
+    //alert(ga_id);
     post_data = {
         'method': 'del_attr',
         'ga_id': ga_id

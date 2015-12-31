@@ -91,7 +91,7 @@
 
 
 分类属性:
-{% if gas %}
+
 
 <table border="1">
     <tr>
@@ -99,7 +99,29 @@
         <th>属性名</th>
         <th>操作</th>
     </tr>
-    {% for ga in gas %}
+    {% for ga in gcppas %}
+    <tr>
+        <td><input type="text" class="ga_id" disabled value="{{ ga.attributeid }}"/></td>
+        <td><a href="/myadmin/goodattribute/{{ ga.attributeid }}" target="_blank">{{ ga.attributename }}</a></td>
+        <td>
+            <button onclick="del_attr(this)" disabled>删除</button>
+            <button onclick="" disabled>修改</button>
+        </td>
+    </tr>
+    {% endfor %}
+    {% for ga in gcpas %}
+    <tr>
+        <td><input type="text" class="ga_id" disabled value="{{ ga.attributeid }}"/></td>
+        <td><a href="/myadmin/goodattribute/{{ ga.attributeid }}" target="_blank">{{ ga.attributename }}</a></td>
+        <td>
+            <button onclick="del_attr(this)" disabled>删除</button>
+            <button onclick="" disabled>修改</button>
+        </td>
+    </tr>
+
+    {% endfor %}
+
+    {% for ga in gcas %}
     <tr>
         <td><input type="text" class="ga_id" disabled value="{{ ga.attributeid }}"/></td>
         <td><a href="/myadmin/goodattribute/{{ ga.attributeid }}" target="_blank">{{ ga.attributename }}</a></td>
@@ -109,13 +131,11 @@
         </td>
     </tr>
     {% endfor %}
+
 </table>
-{% else %}
-还没有属性!
+
+
     <br/>
-{% endif %}
-
-
 
 
 添加属性:

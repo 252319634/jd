@@ -57,7 +57,7 @@ class Goods(models.Model):
 
 class GoodsAttribute(models.Model):
     attributeid = models.IntegerField('属性id', primary_key=True)
-    goodsclass = models.ForeignKey(GoodsClass, related_name='attr_class')
+    goodsclass = models.ForeignKey('GoodsClass', related_name='attr_class')
     attributename = models.CharField('属性名称', max_length=20, null=False)
 
     def __str__(self):
