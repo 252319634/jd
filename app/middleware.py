@@ -9,15 +9,16 @@ from django.template import loader, Context
 
 class CheckSession(object):
     def process_request(self, request):
+        pass
         # process_request 方法不用返回request
-        print('中间件request处理程序开始>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        # print('中间件request处理程序开始>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
         # request.user = request.session.get('user', '')
         # print('添加用户信息%s到request.user中'%request.user)
         # | request.COOKIE.get('userName') 提示'WSGIRequest' object has no attribute 'COOKIE'
         # print('user:'+request.user)
         # 取出session中的user,存到request.user中
-        print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<中间件request处理程序结束')
+        # print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<中间件request处理程序结束')
         # # 获得所有request的数据
         # # 先获得mete数据
         # # request_csrf_token = request.META.get('HTTP_X_CSRFTOKEN', '')
@@ -48,18 +49,18 @@ class CheckSession(object):
 
 
     def process_response(self, request, response):
-        print('中间件response处理程序开始>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        # print('中间件response处理程序开始>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
         # print(response.content[:200])
         # print(response.cookies)
         # print(response.status_code)
-        print (u'图片验证中的内容是:' + request.session.get('verify_text', ''))
+        # print (u'图片验证中的内容是:' + request.session.get('verify_text', ''))
         u = request.session.get('user', '')
-        print('用户信息:%s'%u)
+        # print('用户信息:%s'%u)
         if u:
             response.set_cookie("userName", u.get('userName', ''), max_age=3600 * 24 * 30)
         # 只要用户登录了就把用户名存到cookie中,时间30天
         # if response.status_code == 403:
         # response.content = "403 Forbidden"
-        print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<中间件response处理程序结束')
+        # print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<中间件response处理程序结束')
         return response  # process_response方法必须返回一个response
 

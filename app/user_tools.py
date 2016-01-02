@@ -91,7 +91,7 @@ def user_register(request):
     :return:
     """
     if not verifyTheText(request):
-        return msg(3)
+        return msg(3)  #验证码错误
     password1 = request.POST.get('password1', '')  # 得到密码1
     password2 = request.POST.get('password2', '')  # 得到密码2
     username = request.POST.get('username', '')  # 得到用户名
@@ -103,7 +103,7 @@ def user_register(request):
     u.save()  # 生成一个user对象
     # u 没有save()之前是没有userID的, save()之后就是一个完整的user对象了
     user_add_to_session(request, u)
-    return msg(0)
+    return msg(0)  # 注册成功
 
 def user_login(request):
     """

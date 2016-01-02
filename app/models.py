@@ -37,7 +37,7 @@ class GoodsClass(models.Model):
 
 class Goods(models.Model):
     """
-    商品是属于店铺的,下面的属性都是店铺定义的,
+    商品是属于店铺的
 
     """
     # goodsAttribute=
@@ -45,6 +45,7 @@ class Goods(models.Model):
     classID = models.SmallIntegerField('商品分类', unique=False, null=False)
     goodsName = models.CharField('商品名称', max_length=30, db_index=True, unique=True, null=False)
     price = models.FloatField('定价', null=False)
+    img = models.ImageField('商品图片')
     myprice = models.FloatField('本店价', null=False)
     launchdate = models.DateField('上架时间', auto_now=True)
 
@@ -79,3 +80,14 @@ class AttributeValue(models.Model):
         db_table = "tb_goodsattributevalue"
 
 
+class GoodsObjects(models.Model):
+    objectsid = models.AutoField('物品编号', primary_key=True, unique=True, null=False)
+    objectname = models.CharField('物品名称', max_length=50, null=False)
+    objectdescription = models.CharField('物品描述', max_length=500)
+    attributevalue = models.ManyToManyField(AttributeValue, null=False)
+
+    def __str__(self):
+        return self.objectname
+
+    class Meta:
+        db_table = "tb_objects"
