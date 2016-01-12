@@ -40,6 +40,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'debugtools',
+    # 调试模板的工具 django-debugtools:http://django-debug-toolbar.readthedocs.org/en/1.4/
 )
 
 MIDDLEWARE_CLASSES = (
@@ -52,6 +54,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'app.middleware.CheckSession',
 )
 
@@ -85,7 +88,11 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+CACHES ={
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -110,6 +117,29 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), os.path.join(BASE_DIR, 'app/myadmin/static'))
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#
+# HERE=os.path.dirname(os.path.dirname(__file__))
+# MEDIA_ROOT=os.path.join( HERE , 'media').replace('\\','/')
+# MEDIA_URL = '/media/'
+# STATIC_ROOT =os.path.join( HERE , 'static').replace('\\','/')
+# STATIC_URL= '/static/'
+# ADMIN_MEDIA_ROOT = '/static/admin/'
+# STATICFILES_DIRS = (
+#        os.path.join(HERE,'app1/static/').replace('\\','/'),
+#        os.path.join(HERE,'app2/static/').replace('\\','/')
+# )
+
+
+
+
+
+
+
+
+
 
 # 按手册和网上的方法在settings.py中设置“SESSION_COOKIE_AGE” 和 “SESSION_EXPIRE_AT_BROWSER_CLOSE” 均不生效。
 # 通过查看django的源代码"middleware.py"才知道这两个参数只有在

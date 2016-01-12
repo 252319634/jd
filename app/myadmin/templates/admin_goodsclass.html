@@ -18,8 +18,11 @@
     <div id="J_mainwrap">
 
         <div class="cat-main">
+{#        {% print gcs %}#}
         {% for i in gcs %}
-            {% if i.pid == 0 %}
+{#            {% print i %}#}
+            {% if i.pid_id == 0 %}
+{#                {% print i.pid %}#}
                 <div class="" id="">
                 <div class="title ">
                     <h4><a href="{{ i.cid }}" target="_blank" {% if i.state == 0%}style="text-decoration: line-through"{% endif %}>{{ i.cn }}</a></h4>
@@ -27,14 +30,14 @@
                 <div class="catlist">
                     <ul class="">
                     {% for ii in gcs%}
-                    {% if ii.pid == i.cid %}
+                    {% if ii.pid_id == i.cid %}
                         <li class="section ">
 
                             <h5 class="subtitle"><a href="{{ ii.cid }}" target="_blank"{% if ii.state == 0%}style="text-decoration: line-through"{% endif %}>{{ ii.cn }}</a></h5>
 
                             <div class="sublist">
                                 {% for iii in gcs %}
-                                    {% if iii.pid == ii.cid %}
+                                    {% if iii.pid_id == ii.cid %}
                                         <a href="{{ iii.cid }}" target="_blank"{% if iii.state == 0%}style="text-decoration: line-through"{% endif %}>{{ iii.cn }}</a>
                                     {% endif %}
                                 {% endfor %}
