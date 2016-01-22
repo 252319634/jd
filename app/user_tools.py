@@ -116,7 +116,7 @@ def user_login(request):
     userName = request.POST.get("username", '')  # 获得表单中的用户名
     password = request.POST.get("password", '')  # 获得表单中的密码
 
-    ifSave = request.POST.get("ifsave")
+    ifSave = request.POST.get("ifsave")  # u'true' or u'false'
     u = None
     try:
         u = User.objects.get(userName=userName)
@@ -130,7 +130,7 @@ def user_login(request):
         request.session.set_expiry(3600 * 24 * 30)
         # 默认是1800秒,选择了保存登录信息,则保存一个月
         # 你可以传递四种不同的值给它：
-        # * 如果value是个整数，session会在些秒数后失效（适用于整个Django框架，即这个数值时效时整个页面都会session失效）。
+        # * 如果value是个整数，session会在这些秒数后失效（适用于整个Django框架，即这个数值时效时整个页面都会session失效）。
         # * 如果value是个datatime或timedelta，session就会在这个时间后失效。
         # * 如果value是0,用户关闭浏览器session就会失效。
         # * 如果value是None,session会依赖全局session失效策略。

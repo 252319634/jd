@@ -12,7 +12,6 @@ from jd2 import settings
 urlpatterns = [
     url(r'^myadmin/', include(myadmin.urls)),
     url(r'^admin/', include(admin.site.urls)),
-    # url(r'^xadmin/', include(xadmin.site.urls)),
     url(r'^index/$', views.index),
     url(r'^$', views.index),
     url(r'^verify/', views.verify),  # 这个没有$,后面要加随机数字
@@ -28,4 +27,4 @@ urlpatterns = [
     url(r'^flow2/$', views.flow2),
     url(r'^flow3/$', views.flow3),
 ]
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # 配置media访问url
